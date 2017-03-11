@@ -1,0 +1,97 @@
+#!/usr/bin/python3
+
+
+###########################
+# Dotaz studenta:
+# 
+# 
+###########################
+
+# Chcete-li dostat odpoved, vlozte do nazvu souboru heslo KONTROLA.
+
+
+# IB002 Extra domaci ukol 3.
+#
+# Vasi ulohou bude s vyuzitim principu binarniho vyhledavani implementovat
+# dve metody, find_first_occurrence a find_first_greater. V obou pripadech
+# musi casova slozitost vaseho algoritmu byt nejhure logaritmicka, tedy byt
+# v O(log n). (Pozor, iterovani v poli ma linearni slozitost.)
+#
+# Ukol 1.
+# Implementujte metodu find_first_occurrence, ktera vrati index prvniho
+# vyskytu prvku key v serazenem poli numbers. Pokud se prvek v poli
+# nevyskytuj.
+#
+# Priklady vstupu a vystupu:
+# find_first_occurrence(2, [1, 2, 2, 2, 4]) -->  1
+# find_first_occurrence(3, [1, 2, 4, 5])    --> -1
+
+def find_first_occurrence(key, numbers):
+    min_s = -1
+    max_s = len(numbers)
+    search_key = -1
+    while True:
+        b_search_key = search_key
+        search_key = min_s + (max_s - min_s) // 2
+
+        if b_search_key == search_key:
+            return -1
+        if key == numbers[search_key]:
+            while search_key > 0 and numbers[search_key - 1] == key:
+                search_key -= 1
+            return search_key
+        elif key > numbers[search_key]:
+            min_s = search_key
+        else:
+            max_s = search_key
+
+
+# Ukol 2.
+# Implementujte metodu find_first_greater modifikaci predchozi metody
+# find_first_occurrence tak, ze find_first_greater vrati index prvniho prvku
+# v poli vetsiho nez key. Neni-li v poli zadny takovy, vrati -1.
+#
+# Priklady vstupu a vystupu:
+# find_first_greater(2, [1, 2, 4, 5]) -->  2
+# find_first_greater(3, [1, 2, 4, 5]) -->  2
+# find_first_greater(3, [1, 2, 3])    --> -1
+
+def find_first_greater(key, numbers):
+    min_s = -1
+    max_s = len(numbers)
+    search_key = -1
+    while True:
+        b_search_key = search_key
+        search_key = min_s + (max_s - min_s) // 2
+
+        if b_search_key == search_key:
+            if numbers[search_key] > key:
+                return search_key
+            else:
+                search_key += 1
+            return -1
+
+        while search_key + 1 < len(numbers) and key <= numbers[search_key]:
+            if numbers[search_key] > key:
+                return search_key
+            if numbers[search_key + 1] > key:
+                return search_key + 1
+            else:
+                search_key += 1
+
+        if key > numbers[search_key]:
+            min_s = search_key
+        else:
+            max_s = search_key
+
+
+#print(find_first_occurrence(2, [1, 2, 2, 2, 4]))
+#print(find_first_occurrence(3, [1, 2, 4, 5]))
+#print(find_first_greater(2, [1, 2, 4, 5]))
+#print(find_first_greater(3, [1, 2, 4, 5]))
+#print(find_first_greater(3, [1, 2, 3]))
+
+#print(find_first_greater(4, [1, 2, 3, 4, 5, 6, 7]))
+print(find_first_greater(4, [1, 1, 1, 1, 3, 3, 8]))
+print(find_first_greater(4, [7, 8, 9]))
+print(find_first_greater(4, [4, 5, 6, 7]))
